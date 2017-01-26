@@ -34,40 +34,35 @@ public class TestInfra {
     private String accessKey = "uZCXEzKXwgzgzMr3G7R6";
     private String server = "hub-cloud.browserstack.com";
     private String uName  = "pratikdam1";
+   
 
     @BeforeTest(alwaysRun = true)
    public void startDriver() throws Exception {
-    	Runtime.getRuntime().exec("src/test/resources/BrowserStackLocal --key <key> --daemon  start");
-    	String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY"); 
-        String server = System.getenv("BROWSERSTACK_SERVER"); // -Dhost
-        String username = System.getenv("BROWSERSTACK_USERNAME"); // -Dbrowser
-        String vcfcHost = System.getenv("VCFC_URL");
+    	Runtime.getRuntime().exec("src/test/resources/BrowserStackLocal --key uZCXEzKXwgzgzMr3G7R6 --daemon  start");
         DesiredCapabilities capability = DesiredCapabilities.chrome();
 		capability.setPlatform(Platform.MAC);
 		capability.setCapability("build", "VCFC Test Cases");
 		capability.setCapability("browserstack.local", "true");
 		
-
 		driver = new RemoteWebDriver(
-				new URL("https://"+username+":"+"accessKey"+"@"+server+"/wd/hub"), capability);
-//		driver = new RemoteWebDriver(
-//			      new URL("https://pratikdam1:uZCXEzKXwgzgzMr3G7R6@hub-cloud.browserstack.com/wd/hub"),
-//			      capability
-//			    );
+			      new URL("https://pratikdam1:uZCXEzKXwgzgzMr3G7R6@hub-cloud.browserstack.com/wd/hub"),
+			      capability
+			    );
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
 
         // Get a handle to the driver. This will throw an exception if a matching driver cannot be located
 
-        driver.get("https://10.9.8.86/");
+        driver.get("https://10.9.10.208/");
 
     }
 
     @AfterTest(alwaysRun = true)
-    public void setupAfterSuite() {
+    public void setupAfterSuite() throws IOException {
         driver.close();
         driver.quit();
+        Runtime.getRuntime().exec("src/test/resources/BrowserStackLocal --key uZCXEzKXwgzgzMr3G7R6 --daemon  stop");
     }
 
     public boolean isContainsText(String text) {

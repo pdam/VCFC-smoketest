@@ -165,23 +165,35 @@ public class VcfSettingsPage extends BasicInfra{
 		sudo.click();
 		setValue(heapsize,size);
 		okButton.click();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<WebElement> rows = new ArrayList();
+		rows = driver.findElements(By.cssSelector("div.tr.ng-scope"));
+        while(rows.size()==1){
+			try {
+    			Thread.sleep(4000);
+    		} catch (InterruptedException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+			rows = driver.findElements(By.cssSelector("div.tr.ng-scope"));
 		}
 		waitForElementVisibility(switchList,100);
 		
 	}
 	
-	public String verifyDataNode(String host) {	
-		waitForElementVisibility(switchList,100);
+	public String verifyDataNode(String host) {		
 		List<WebElement> rows = new ArrayList();
+		
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		rows = driver.findElements(By.cssSelector("div.tr.ng-scope"));
+		
 		String rowTable = null;
 	       for (WebElement row : rows) {
-	        	System.out.println("Row text"+row.getText());
+	        	System.out.println("Row text"+row.getText());	        	
 	            if (row.getText().contains(host)) {
 	                rowTable = row.getText();
 	                break;
